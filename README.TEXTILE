@@ -1,0 +1,6 @@
+h1. Ruby Markov Chain Generator
+
+h2. Usage
+
+# Run markov-serialise.rb <input text file> <chunksize> <output file>
+# Run markov-run.rb <input serialised file> <length>
