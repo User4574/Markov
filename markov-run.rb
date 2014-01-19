@@ -2,7 +2,11 @@
 
 PRNG = Random.new(Time.now.to_i)
 
-stats = Marshal::load(File.open(ARGV[0]).read)
+STATS = Marshal::load(File.open(ARGV[0]).read)
+
+CHUNK = STATS["__SETTINGS__"]["__CHUNK__"]
+
+NUM = (ARGV[2] or "1").to_i
 
 def cfd(hash)
 	tot = 0
@@ -19,17 +23,17 @@ def sel(hash)
 	}
 end
 
-current = stats.keys.select{|k|k.first.match(/^[A-Z]/)}.sample
-
-print "#{current.join(" ")} "
-
-def achunk(chunk, hash)
+def aword(chunk, hash)
 	sel(cfd(hash[chunk]))
 end
 
-(ARGV[1].to_i - 1).times do
-	current = achunk(current, stats)
-	print "#{current.join(" ")} "
-end
+NUM.times do
+	current = STATS.keys.select{|k| k != "__SETTINGS__" }.sample
 
-puts
+	(ARGV[1].to_i - CHUNK).times do
+		current << aword(current[-CHUNK..-1], STATS)
+	end
+
+	puts current.join(" ")
+	puts
+end
