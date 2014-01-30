@@ -12,12 +12,16 @@ def handle_input(inputs)
 	when 'load'
 		case input[1]
 		when 'corpus'
-			$replstate[:analyser] = Markov::Analyser.new(input[2], input[3].to_i)
-		when 'serial'
-			$replstate[:generator] = Markov::Generator.new(input[2])
+			$replstate[:analyser] = Markov::Analyser.new(input[2])
+		when 'stats'
+			unless input[2].nil? then
+				$replstate[:generator] = Markov::Generator.new(input[2], :file)
+			else
+				$replstate[:generator] = Markov::Generator.new($replstate[:analyser].stats)
+			end
 		end
 	when 'analyse'
-		$replstate[:analyser].analyse
+		$replstate[:analyser].analyse(input[1].to_i)
 	when 'save'
 		$replstate[:analyser].save(input[1])
 	when 'generate'
@@ -25,6 +29,8 @@ def handle_input(inputs)
 	when 'quit'
 		puts
 		exit
+	else
+		puts "Error"
 	end
 end
 

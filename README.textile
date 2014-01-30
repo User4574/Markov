@@ -2,9 +2,13 @@ h1. Ruby Markov Chain Generator
 
 h2. Usage
 
-bc. $ ./markov-repl.rb
->> load corpus <corpusfile> <chunklength>
->> analyse
->> save <datafile>
->> load serial <datafile>
->> generate <length>
+bc.. $ ./markov-repl.rb
+>> load corpus <corpusfile>
+>> analyse <chunklength>
+>> load stats
+>> generate <numwords>
+>> save <serialisedfile>
+
+$ ./markov-repl.rb
+>> load stats <serialisedfile>
+>> generate <numwords>

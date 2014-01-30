@@ -1,15 +1,15 @@
 module Markov
 	class Analyser
-		def initialize(inputfile, chunklength)
-			@chunklength = chunklength
-			@stats = {"__SETTINGS__" => {"__CHUNKLENGTH__" => @chunklength}}
-
+		def initialize(inputfile)
 			@words = File.readlines(inputfile)
 						 .map(&:split)
 						 .flatten
 		end
 
-		def analyse
+		def analyse(chunklength)
+			@chunklength = chunklength
+			@stats = {"__SETTINGS__" => {"__CHUNKLENGTH__" => @chunklength}}
+
 			(0 .. (@words.length - @chunklength - @chunklength)).each do |i|
 				k = @words[i...(i+@chunklength)]
 				v = @words[(i+@chunklength)]
@@ -25,6 +25,10 @@ module Markov
 					@stats[k][v] = 1
 				end
 			end
+		end
+
+		def stats
+			return @stats
 		end
 
 		def save(outputfile)

@@ -1,8 +1,12 @@
 module Markov
 	class Generator
-		def initialize(inputfile)
+		def initialize(input, type=:var)
 			@prng = Random.new(Time.now.to_i)
-			@stats = Marshal::load(File.open(inputfile).read)
+			if type == :var then
+				@stats = input
+			elsif type == :file then
+				@stats = Marshal::load(File.open(input).read)
+			end
 			@chunklength = @stats["__SETTINGS__"]["__CHUNKLENGTH__"]
 		end
 
